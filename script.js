@@ -1,0 +1,114 @@
+const recordButton = document.getElementById('recordButton');
+const recordingStatus = document.getElementById('recordingStatus');
+const initialTranscriptionElem = document.getElementById('initialTranscription');
+const finalSoundElem = document.getElementById('finalSound');
+const finalAudioElem = document.getElementById('finalAudio');
+const resultsDiv = document.getElementById('results');
+
+// --- NEW: Get reference to the model selector ---
+const modelSelector = document.getElementById('modelSelector');
+
+// --- Define the base URL for your backend API ---
+const API_BASE_URL = 'https://doorz.stefanusadri.my.id';
+
+let isRecording = false;
+let mediaRecorder;
+let audioChunks = [];
+let mediaStream = null;
+
+async function initializeAudio() {
+    // This function is unchanged
+    if (mediaStream) {
+        return true; 
+    }
+    try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        return true;
+    } catch (error) {
+        console.error("Error accessing microphone:", error);
+        alert("Could not access microphone. Please allow microphone access in your browser settings and refresh the page.");
+        return false;
+    }
+}
+
+recordButton.addEventListener('click', async () => {
+    // This function is unchanged
+    if (!isRecording) {
+        const audioInitialized = await initializeAudio();
+        if (!audioInitialized) {
+            return; 
+        }
+
+        mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm' });
+        mediaRecorder.ondataavailable = event => {
+            audioChunks.push(event.data);
+        };
+        mediaRecorder.onstop = sendAudioToServer;
+        mediaRecorder.start();
+
+        recordButton.classList.add('recording');
+        recordingStatus.textContent = 'Recording... Press to stop.';
+        isRecording = true;
+
+    } else {
+        mediaRecorder.stop();
+        recordButton.classList.remove('recording');
+        recordingStatus.textContent = 'Processing...';
+        isRecording = false;
+    }
+});
+
+// --- MODIFIED sendAudioToServer function ---
+async function sendAudioToServer() {
+    const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType });
+    audioChunks = [];
+
+    // Get the selected model value from the dropdown
+    const selectedModel = modelSelector.value;
+
+    const formData = new FormData();
+    formData.append('audio_file', audioBlob, 'recording.webm');
+    // Add the selected model to the form data
+    formData.append('model_selection', selectedModel);
+
+    resultsDiv.classList.remove('hidden');
+    initialTranscriptionElem.textContent = 'Transcribing...';
+    finalSoundElem.textContent = 'Refining...';
+    finalAudioElem.classList.remove('visible');
+    finalAudioElem.src = ''; 
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/process_audio`, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`Server error: ${response.status} - ${errorData.message || 'Unknown error'}`);
+        }
+
+        const data = await response.json();
+
+        initialTranscriptionElem.textContent = data.initial_transcription;
+        finalSoundElem.textContent = data.natural_text;
+
+        const audioResponse = await fetch(`${API_BASE_URL}/get_response_audio`);
+        if (audioResponse.ok) {
+            const audioBlob = await audioResponse.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            finalAudioElem.src = audioUrl;
+            finalAudioElem.classList.add('visible');
+            recordingStatus.textContent = 'Done! Record another?';
+        } else {
+            console.error("Could not fetch the generated audio file.");
+            recordingStatus.textContent = 'Error fetching audio.';
+        }
+
+    } catch (error) {
+        console.error("Error processing audio:", error);
+        initialTranscriptionElem.textContent = 'An error occurred during processing.';
+        finalSoundElem.textContent = '-';
+        recordingStatus.textContent = `Error: ${error.message}`;
+    }
+}

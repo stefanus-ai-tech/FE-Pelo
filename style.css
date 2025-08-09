@@ -1,0 +1,132 @@
+:root {
+    --primary-color: #007bff;
+    --primary-hover-color: #0056b3;
+    --danger-color: #dc3545;
+    --danger-hover-color: #c82333;
+    --light-gray-color: #f8f9fa;
+    --medium-gray-color: #e9ecef;
+    --dark-gray-color: #6c757d;
+    --text-color: #343a40;
+    --background-color: #f0f2f5;
+    --card-background-color: #ffffff;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--background-color);
+    margin: 0;
+    color: var(--text-color);
+}
+
+.container {
+    background-color: var(--card-background-color);
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    width: 90%;
+    max-width: 650px;
+    transition: all 0.3s ease;
+}
+
+header h1 {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 1.75rem;
+}
+
+header p {
+    color: var(--dark-gray-color);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+#recordButton {
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.4);
+}
+
+#recordButton:hover {
+    background-color: var(--primary-hover-color);
+    transform: scale(1.05);
+}
+
+#recordButton.recording {
+    background-color: var(--danger-color);
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4);
+}
+
+#recordButton.recording:hover {
+    background-color: var(--danger-hover-color);
+}
+
+.status-text {
+    color: var(--dark-gray-color);
+    min-height: 1.5em;
+    margin-top: 1rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#results {
+    margin-top: 2.5rem;
+    text-align: left;
+}
+
+.transcription-card {
+    background-color: var(--light-gray-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--medium-gray-color);
+    margin-bottom: 1.5rem;
+}
+
+.transcription-card h2 {
+    color: var(--text-color);
+    border-bottom: 1px solid var(--medium-gray-color);
+    padding-bottom: 0.75rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.transcription-text {
+    background-color: var(--card-background-color);
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    min-height: 2em;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+#finalAudio {
+    width: 100%;
+    margin-top: 1rem;
+    display: none;
+}
+
+#finalAudio.visible {
+    display: block;
+}

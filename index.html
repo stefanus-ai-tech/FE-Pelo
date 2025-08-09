@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Transcription</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Pelo Voice to Natural Sound</h1>
+            <p>Select a model, then press the button and start speaking. We'll transcribe and refine your voice note.</p>
+        </header>
+
+        <main>
+            <div class="model-selector-section">
+                <label for="modelSelector">Choose a transcription model:</label>
+                <select id="modelSelector">
+                    <option value="lora" selected>Fine-tuned LoRA Model (Local)</option>
+                    <!-- MODIFIED TEXT BELOW -->
+                    <option value="large_v3">Whisper Large v3 (Groq API)</option>
+                </select>
+            </div>
+
+            <div class="record-section">
+                <button id="recordButton" aria-label="Start Recording">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11h-1c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92z"/></svg>
+                </button>
+                <p id="recordingStatus" class="status-text"></p>
+            </div>
+
+            <div id="results" class="hidden">
+                <div class="transcription-card">
+                    <h2>Initial Transcription</h2>
+                    <p id="initialTranscription" class="transcription-text">...</p>
+                </div>
+                <div class="transcription-card">
+                    <h2>Final Sound</h2>
+                    <p id="finalSound" class="transcription-text">...</p>
+                    <audio id="finalAudio" controls></audio>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
