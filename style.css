@@ -522,20 +522,3 @@ body {
     100% { background-position: 200% 0; }
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --cream: #1A1A1A;
-        --light-gray: #2D2D2D;
-        --warm-blush: #2A1B1F;
-        --soft-rose: #3D252A;
-        --text-primary: #FFFFFF;
-        --text-secondary: #E2E8F0;
-        --text-muted: #A0AEC0;
-        --gradient-card: linear-gradient(145deg, #2D2D2D 0%, var(--warm-blush) 100%);
-    }
-    
-    body {
-        background: linear-gradient(135deg, var(--warm-blush) 0%, var(--cream) 100%);
-    }
-}
