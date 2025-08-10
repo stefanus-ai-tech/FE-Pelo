@@ -5,11 +5,12 @@ const finalSoundElem = document.getElementById('finalSound');
 const finalAudioElem = document.getElementById('finalAudio');
 const resultsDiv = document.getElementById('results');
 
-// --- NEW: Get reference to the model selector ---
+// --- NEW: Get reference to both model and prompt selectors ---
 const modelSelector = document.getElementById('modelSelector');
+const promptSelector = document.getElementById('promptSelector'); // <-- ADDED
 
 // --- Define the base URL for your backend API ---
-const API_BASE_URL = 'https://doorz.stefanusadri.my.id';
+const API_BASE_URL = 'http://127.0.0.1:8001'; // Use your actual backend URL
 
 let isRecording = false;
 let mediaRecorder;
@@ -19,7 +20,7 @@ let mediaStream = null;
 async function initializeAudio() {
     // This function is unchanged
     if (mediaStream) {
-        return true; 
+        return true;
     }
     try {
         mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -36,7 +37,7 @@ recordButton.addEventListener('click', async () => {
     if (!isRecording) {
         const audioInitialized = await initializeAudio();
         if (!audioInitialized) {
-            return; 
+            return;
         }
 
         mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm' });
@@ -63,13 +64,15 @@ async function sendAudioToServer() {
     const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType });
     audioChunks = [];
 
-    // Get the selected model value from the dropdown
+    // Get the selected values from BOTH dropdowns
     const selectedModel = modelSelector.value;
+    const selectedPrompt = promptSelector.value; // <-- ADDED
 
     const formData = new FormData();
     formData.append('audio_file', audioBlob, 'recording.webm');
-    // Add the selected model to the form data
+    // Add BOTH selections to the form data
     formData.append('model_selection', selectedModel);
+    formData.append('prompt_selection', selectedPrompt); // <-- ADDED
 
     resultsDiv.classList.remove('hidden');
     initialTranscriptionElem.textContent = 'Transcribing...';
