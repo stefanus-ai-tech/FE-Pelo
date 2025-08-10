@@ -10,7 +10,23 @@ const modelSelector = document.getElementById('modelSelector');
 const promptSelector = document.getElementById('promptSelector'); // <-- ADDED
 
 // --- Define the base URL for your backend API ---
-const API_BASE_URL = 'https://doorz.stefanusadri.my.id/'; // Use your actual backend URL
+let API_BASE_URL = 'https://doorz.stefanusadri.my.id/';
+
+async function checkApiUrl() {
+    try {
+        const res = await fetch(API_BASE_URL, { method: 'HEAD', mode: 'no-cors' });
+        // If the fetch succeeds, keep using the remote URL
+        console.log(`Using remote API: ${API_BASE_URL}`);
+    } catch (error) {
+        // If it fails, fallback to localhost
+        API_BASE_URL = 'http://localhost:8001/';
+        console.warn(`Remote API unreachable. Falling back to: ${API_BASE_URL}`);
+    }
+}
+
+// Run the check before making API calls
+checkApiUrl();
+
 
 let isRecording = false;
 let mediaRecorder;
