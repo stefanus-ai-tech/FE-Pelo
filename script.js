@@ -10,7 +10,7 @@ const modelSelector = document.getElementById('modelSelector');
 const promptSelector = document.getElementById('promptSelector'); // <-- ADDED
 
 // --- Define the base URL for your backend API ---
-let API_BASE_URL = 'https://doorz.stefanusadri.my.id/';
+let API_BASE_URL = 'https://doorz.stefanusadri.my.id';
 
 async function checkApiUrl() {
     try {
@@ -19,7 +19,7 @@ async function checkApiUrl() {
         console.log(`Using remote API: ${API_BASE_URL}`);
     } catch (error) {
         // If it fails, fallback to localhost
-        API_BASE_URL = 'http://localhost:8001/';
+        API_BASE_URL = 'http://localhost:8001';
         console.warn(`Remote API unreachable. Falling back to: ${API_BASE_URL}`);
     }
 }
