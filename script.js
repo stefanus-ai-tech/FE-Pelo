@@ -10,7 +10,7 @@ const modelSelector = document.getElementById('modelSelector');
 const promptSelector = document.getElementById('promptSelector'); // <-- ADDED
 
 // --- Define the base URL for your backend API ---
-const API_BASE_URL = 'http://127.0.0.1:8001'; // Use your actual backend URL
+const API_BASE_URL = 'https://doorz.stefanusadri.my.id/'; // Use your actual backend URL
 
 let isRecording = false;
 let mediaRecorder;
