@@ -10,22 +10,24 @@ const modelSelector = document.getElementById('modelSelector');
 const promptSelector = document.getElementById('promptSelector'); // <-- ADDED
 
 // --- Define the base URL for your backend API ---
-(async () => {
-    const primary = 'https://doorz.stefanusadri.my.id';
-    const fallback = 'https://pelo.stefanusadri.my.id';
+const API_BASE_URL = 'https://pelo.stefanusadri.my.id';
 
-    const API_BASE_URL = await (async () => {
-        try {
-            await fetch(primary, { method: 'HEAD', mode: 'no-cors' });
-            return primary;
-        } catch {
-            console.warn(`Primary API not reachable, switching to fallback: ${fallback}`);
-            return fallback;
-        }
-    })();
+// (async () => {
+//     const primary = 'https://doorz.stefanusadri.my.id';
+//     const fallback = 'https://pelo.stefanusadri.my.id';
 
-    console.log(`Using API: ${API_BASE_URL}`);
-})();
+//     const API_BASE_URL = await (async () => {
+//         try {
+//             await fetch(primary, { method: 'HEAD', mode: 'no-cors' });
+//             return primary;
+//         } catch {
+//             console.warn(`Primary API not reachable, switching to fallback: ${fallback}`);
+//             return fallback;
+//         }
+//     })();
+
+//     console.log(`Using API: ${API_BASE_URL}`);
+// })();
 
 
 
